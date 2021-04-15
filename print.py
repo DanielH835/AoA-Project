@@ -1,3 +1,4 @@
+import copy
 def graph():
 	
 	with open('test.txt') as f:
@@ -40,7 +41,7 @@ def graph():
 		#print(s_e)
 
 		res = constructPaths(adj_list, s_e)
-		#print(res)
+		print(res)
 
 def constructPaths(adj, se):
 
@@ -70,7 +71,7 @@ def allPathsHelper(start, end, adj, visited, path, paths):
 
 	if start == end:
 		#print("path:", path)
-		paths.append(path)
+		paths.append(copy.deepcopy(path))
 		#print("paths:", paths)
 		
 	else:
