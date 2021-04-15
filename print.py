@@ -7,7 +7,7 @@ num_pairs = 10
 
 def graph(num_nodes,num_pairs):
 	
-	with open('test.txt') as f:
+	with open('test1.txt') as f:
 		#reads title "edges"
 		line = f.readline()
 
