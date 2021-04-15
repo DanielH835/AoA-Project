@@ -46,9 +46,57 @@ def graph(num_nodes,num_pairs):
 		#print("---------------")
 		#print(s_e)
 
-		res = constructPaths(adj_list, s_e)
+		all_possible_paths = constructPaths(adj_list, s_e)
 		#print(res)
+		res = check_distinct(all_possible_paths)
 		return res,s_e
+
+def mark_unvisited_for_backtracking(path, visited):
+	for node in path:
+		visited[int(node)] = False
+
+
+def reject_path(path, visited):
+	for node in path:
+		if visited[int(node)]:
+			return True
+	for node in path:
+		visited[int(node)] = True
+	return False
+
+def check_path_with_backtracking(path_dict, key_list, index, visited):
+	possible_paths = path_dict[key_list[index]]
+	for path in possible_paths:
+		if reject_path(path, visited):
+			continue
+		else:
+			if index+1 < len(key_list):
+				if check_path_with_backtracking(path_dict, key_list, index+1, visited):
+					return True
+				else:
+					#although path was accepted but for the later nodes, this creates some common
+					#intersecting node, hence skip this path, check another.
+					#mark nodes of this path as unvisited and go to the next path
+					mark_unvisited_for_backtracking(path, visited)
+					continue
+				#something to return here
+			else:
+				#all keys have been checked for the paths
+				#we have found the k distinct paths 
+				return true
+	#reach here if all possible paths for a particular pair of start and ending
+	#vertices cannot be selected, i.e., have a common intermediate node with
+	#previously selected paths. Backtrack now.
+	return False
+
+def check_distinct(path_dict):
+	#fixing first pair of nodes to get the path
+	visited = [False] * num_nodes
+	index = 0
+	key_list = list(path_dict.keys())
+	paths = path_dict[key_list[0]]
+	if check_path_with_backtracking(path_dict, key_list, index, visited):
+		return True
 
 def constructPaths(adj, se):
 
