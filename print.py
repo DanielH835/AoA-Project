@@ -1,5 +1,11 @@
 import copy
-def graph():
+
+
+num_nodes = 100 #number of vertices in graph
+num_pairs = 10
+
+
+def graph(num_nodes,num_pairs):
 	
 	with open('test.txt') as f:
 		#reads title "edges"
@@ -9,7 +15,7 @@ def graph():
 		adj_list = {}
 
 		#read line of adjacency list
-		for i in range(6):
+		for i in range(num_nodes):
 			line = f.readline()
 			adj = line.split()
 
@@ -31,7 +37,7 @@ def graph():
 		s_e = []
 
 		#read line of (s,t) points
-		for i in range(2):
+		for i in range(num_pairs):
 			line = f.readline()
 			tup = tuple(line.split())
 			s_e.append(tup)	
@@ -41,7 +47,8 @@ def graph():
 		#print(s_e)
 
 		res = constructPaths(adj_list, s_e)
-		print(res)
+		#print(res)
+		return res,s_e
 
 def constructPaths(adj, se):
 
@@ -51,12 +58,11 @@ def constructPaths(adj, se):
 
 	return all_paths
 
-V = 7 #number of vertices in graph
 
 def allPaths(start, end, adj):
 
-	#visited = [False] * V
-	visited = [False for i in range(V)]
+
+	visited = [False for i in range(num_nodes)]
 	path = [] #current path to check
 	paths = []
 	allPathsHelper(start, end, adj, visited, path, paths)
@@ -66,7 +72,7 @@ def allPaths(start, end, adj):
 	
 def allPathsHelper(start, end, adj, visited, path, paths):
 
-	visited[int(start)] = True
+	visited[int(start)-1] = True
 	path.append(int(start))
 
 	if start == end:
@@ -76,13 +82,13 @@ def allPathsHelper(start, end, adj, visited, path, paths):
 		
 	else:
 		for neighbor in adj[start]:
-			if visited[int(neighbor)] == False:
+			if visited[int(neighbor)-1] == False:
 				allPathsHelper(neighbor, end, adj, visited, path, paths)
 
 	path.pop()
-	visited[int(start)] = False
+	visited[int(start)-1] = False
 	
 
 
 if __name__ == "__main__":
-	graph()
+	res,s_e = graph(num_nodes,num_pairs)
