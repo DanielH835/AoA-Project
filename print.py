@@ -88,6 +88,12 @@ def allPathsHelper(start, end, adj, visited, path, paths):
 	path.pop()
 	visited[int(start)-1] = False
 	
+	
+def match(list1, list2): #a function to help remove the redundant paths from a solution
+    for i in range(len(list1[:-1])):
+        if list1[i] != list2[i]:
+            return False
+    return True	
 
 
 if __name__ == "__main__":
