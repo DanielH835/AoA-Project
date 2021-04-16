@@ -1,13 +1,13 @@
 import copy
 
 
-num_nodes = 100 #number of vertices in graph
-num_pairs = 10
+num_nodes = 6 #number of vertices in graph
+num_pairs = 2
 
 
 def graph(num_nodes,num_pairs):
 	
-	with open('test1.txt') as f:
+	with open('test.txt') as f:
 		#reads title "edges"
 		line = f.readline()
 
@@ -49,19 +49,19 @@ def graph(num_nodes,num_pairs):
 		all_possible_paths = constructPaths(adj_list, s_e)
 		#print(res)
 		res = check_distinct(all_possible_paths)
-		return res,s_e
+		#return res,s_e
 
 def mark_unvisited_for_backtracking(path, visited):
 	for node in path:
-		visited[int(node)] = False
+		visited[int(node)-1] = False
 
 
 def reject_path(path, visited):
 	for node in path:
-		if visited[int(node)]:
+		if visited[int(node)-1]:
 			return True
 	for node in path:
-		visited[int(node)] = True
+		visited[int(node)-1] = True
 	return False
 
 def check_path_with_backtracking(path_dict, key_list, index, visited):
@@ -83,7 +83,7 @@ def check_path_with_backtracking(path_dict, key_list, index, visited):
 			else:
 				#all keys have been checked for the paths
 				#we have found the k distinct paths 
-				return true
+				return True
 	#reach here if all possible paths for a particular pair of start and ending
 	#vertices cannot be selected, i.e., have a common intermediate node with
 	#previously selected paths. Backtrack now.
@@ -145,4 +145,4 @@ def match(list1, list2): #a function to help remove the redundant paths from a s
 
 
 if __name__ == "__main__":
-	res,s_e = graph(num_nodes,num_pairs)
+	res = graph(num_nodes,num_pairs)
