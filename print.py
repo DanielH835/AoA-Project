@@ -49,7 +49,7 @@ def graph(num_nodes,num_pairs):
 		all_possible_paths = constructPaths(adj_list, s_e)
 		#print(res)
 		res = check_distinct(all_possible_paths)
-		#return res,s_e
+		return res
 
 def mark_unvisited_for_backtracking(path, visited):
 	for node in path:
@@ -146,3 +146,7 @@ def match(list1, list2): #a function to help remove the redundant paths from a s
 
 if __name__ == "__main__":
 	res = graph(num_nodes,num_pairs)
+	if res:
+		print("Found k distinct paths\n")
+	else:
+		print("Cannot find k distinct paths\n")
