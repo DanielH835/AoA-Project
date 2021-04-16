@@ -4,6 +4,7 @@ import copy
 num_nodes = 6 #number of vertices in graph
 num_pairs = 2
 
+result_path = {}
 
 def graph(num_nodes,num_pairs):
 	
@@ -72,6 +73,7 @@ def check_path_with_backtracking(path_dict, key_list, index, visited):
 		else:
 			if index+1 < len(key_list):
 				if check_path_with_backtracking(path_dict, key_list, index+1, visited):
+					result_path[key_list[index]] = path
 					return True
 				else:
 					#although path was accepted but for the later nodes, this creates some common
@@ -83,6 +85,7 @@ def check_path_with_backtracking(path_dict, key_list, index, visited):
 			else:
 				#all keys have been checked for the paths
 				#we have found the k distinct paths 
+				result_path[key_list[index]] = path #adding path for the last pair of nodes
 				return True
 	#reach here if all possible paths for a particular pair of start and ending
 	#vertices cannot be selected, i.e., have a common intermediate node with
@@ -114,7 +117,7 @@ def allPaths(start, end, adj):
 	path = [] #current path to check
 	paths = []
 	allPathsHelper(start, end, adj, visited, path, paths)
-	#print(paths)
+	print(paths)
 	return paths 
 
 	
@@ -147,6 +150,7 @@ def match(list1, list2): #a function to help remove the redundant paths from a s
 if __name__ == "__main__":
 	res = graph(num_nodes,num_pairs)
 	if res:
-		print("Found k distinct paths\n")
+		print("Found k distinct paths:\n")
+		print(result_path)
 	else:
 		print("Cannot find k distinct paths\n")
