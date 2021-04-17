@@ -2,8 +2,8 @@ import copy
 import sys
 
 
-num_nodes = 20 #number of vertices in graph
-num_pairs = 4
+num_nodes = 100 #number of vertices in graph
+num_pairs = 10
 
 result_path = {}
 
@@ -109,11 +109,11 @@ def constructPaths(adj, se):
 
 	for start, end in se:
 		if end in adj[start]:
-			all_paths[(start, end)] = [[start, end]]
-			pre_visited.append(start)
-			pre_visited.append(end)
+			all_paths[(int(start), int(end))] = [[start, end]]
+			pre_visited.append(int(start))
+			pre_visited.append(int(end))
 		else:
-			all_paths[(start, end)] = allPaths(start, end, adj, pre_visited)
+			all_paths[(int(start), int(end))] = allPaths(start, end, adj, pre_visited)
 		#all_paths[(start, end)] = allPaths(start, end, adj)
 
 	return all_paths
@@ -124,31 +124,24 @@ def allPaths(start, end, adj, pre_visited):
 
 	visited = [False for i in range(num_nodes)]
 	for node in pre_visited:
-		visited[int(node)] = True
+		visited[int(node)-1] = True
 
 	path = [] #current path to check
 	paths = []
 	counter = 1
-	allPathsHelper(start, end, adj, visited, path, paths,counter)
+	allPathsHelper(start, end, adj, visited, path, paths)
 	#print(paths)
 	return paths 
 
 	
-def allPathsHelper(start, end, adj, visited, path, paths,counter):
+def allPathsHelper(start, end, adj, visited, path, paths):
 
 	visited[int(start)-1] = True
 	path.append(int(start))
-	#check = False
 
 	if start == end:
-		if len(path) == counter:
-			#paths = [[start, end]]
-			print("path:", path)
-			paths.append(copy.deepcopy(path))
-			return
-		else:
-			print("path:", path)
-			paths.append(copy.deepcopy(path))
+		print("path:", path)
+		paths.append(copy.deepcopy(path))
 		#print("path:", path)
 		#paths.append(copy.deepcopy(path))
 		
@@ -157,18 +150,13 @@ def allPathsHelper(start, end, adj, visited, path, paths,counter):
 			a = adj[start]
 			temp = adj[start].index(end)
 			a[0],a[temp]  =  a[temp],a[0]
-			#check = True
-		counter+=1
+
 		for neighbor in adj[start]:
 			if visited[int(neighbor)-1] == False:
-				allPathsHelper(neighbor, end, adj, visited, path, paths,counter)
-	#if len(path) == 2:
-	#	return
+				allPathsHelper(neighbor, end, adj, visited, path, paths)
+	if len(path) == 2:
+		return
 	path.pop()
-	#if check:
-	#	path.pop()
-	#else:
-	#	visited[int(start)-1] = False
 	visited[int(start)-1] = False
 
 
@@ -179,13 +167,12 @@ def main(*argv):
 	res = graph(num_nodes, num_pairs, samplein)
 	if res:
 		sorted_tup = sorted(result_path.keys())
-		print(sorted_tup)
 		f = open("sampleout.txt", "w")
 
 		print("We found", len(sorted_tup), "distinct paths:")
 
 		for tup in sorted_tup:
-			f.write(tup[0])
+			f.write(str(tup[0]))
 			f.write(" ")
 			print(tup[0], end=" ")
 			edges = result_path[tup]
@@ -199,7 +186,7 @@ def main(*argv):
 		f.close()
 
 	else:
-		print("Cannot find any path, do better next time!")
+		print("Cannot find any path, do better next time loser!")
 
 if __name__ == "__main__":
 	main()
